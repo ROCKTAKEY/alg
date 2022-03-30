@@ -44,7 +44,7 @@ jobs:
       - run: keg run test-all
         env:
           UNDERCOVER_FORCE: true
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v2
 
   lint:
     runs-on: ubuntu-latest
