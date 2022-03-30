@@ -5,7 +5,7 @@
 ;; Author: ROCKTAKEY <rocktakey@gmail.com>
 ;; Keywords: tools
 
-;; Version: 0.2.1
+;; Version: 0.2.2
 ;; Package-Requires: ((emacs "24.1") (cl-lib "0.7"))
 ;; URL: https://github.com/ROCKTAKEY/alg
 
@@ -63,8 +63,10 @@
     (while (<= (* i i) n)
       (when (aref numbers i)
         (push i prime-numbers)
-        (dolist (j (number-sequence 0 n i))
-          (aset numbers j nil)))
+        (let (j 0)
+          (while (<= j n)
+            (aset numbers j nil)
+            (cl-incf j i))))
       (cl-incf i))
 
     (vconcat (nreverse prime-numbers)
@@ -79,9 +81,11 @@
          (s3 '(11 23 47 59))
          (s (alg-merge-sorted (alg-merge-sorted s1 s2) s3))
          (result (make-hash-table)))
-    (dolist (i (number-sequence 0 (/ n 60)))
-      (dolist (j s)
-        (puthash (+ (* i 60) j) nil result)))
+    (let ((i 0))
+      (while (<= (* 60 i) n)
+        (dolist (j s)
+          (puthash (+ (* i 60) j) nil result))
+        (cl-incf i)))
 
     (let (k
           (x 1)
@@ -122,21 +126,25 @@
         (let ((k (+ (* i 60) j)))
           (when (and (<= 7 k)
                      (gethash k result))
-            (dolist (i2 (number-sequence 0 (/  n (* k k) 60)))
-              (dolist (j2 s)
-                (puthash (* k k (+ (* i2 60) j2)) nil result)))))))
+            (let ((i2 0))
+              (while (<= (* i2 k k 60) n)
+                (dolist (j2 s)
+                  (puthash (* k k (+ (* i2 60) j2)) nil result))
+                (cl-incf i2)))))))
 
-    (let (res k)
-     (dolist (i (number-sequence 0 (/ n 60)))
-      (dolist (j s)
-        (when (gethash (setq k (+ (* i 60) j)) result)
-          (push k res))))
-     (vconcat
-      (pcase n
-        ((pred (<= 5)) '(2 3 5))
-        ((pred (<= 3)) '(2 3))
-        ((pred (<= 2)) '(2)))
-      (nreverse res)))))
+    (let ((i 0)
+          res k)
+      (while (<= (* 60 i) n)
+        (dolist (j s)
+          (when (gethash (setq k (+ (* i 60) j)) result)
+            (push k res)))
+        (cl-incf i))
+      (vconcat
+       (pcase n
+         ((pred (<= 5)) '(2 3 5))
+         ((pred (<= 3)) '(2 3))
+         ((pred (<= 2)) '(2)))
+       (nreverse res)))))
 
 (provide 'alg)
 ;;; alg.el ends here
