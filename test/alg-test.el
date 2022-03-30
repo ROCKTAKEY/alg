@@ -24,6 +24,7 @@
 ;;; Code:
 
 (require 'ert)
+(require 'cl-lib)
 
 (require 'undercover)
 (undercover "*.el"
@@ -73,6 +74,54 @@
   (should (equal (alg-atkin-sieve 7) [2 3 5 7]))
   (should (equal (alg-atkin-sieve 1000) alg-test-prime-numbers-less-than-1000)))
 
+(defmacro ert-deftest-validate-hash-table (name arglist &optional docstring &rest body)
+  "Define ert test which validate hash-table.
+ARGLIST and DOCSTRING is passed to `ert-deftest'.
 
+Each element of BODY is list. First element is sexp which return hash-table,
+and second element is alist which is compared to hash-table.
+Each test is named NAME prefixed by sequential number."
+  (declare (indent defun))
+  (unless (stringp docstring)
+    (push docstring body)
+    (setq docstring nil))
+
+  (let ((ht (cl-gensym "hash-table")))
+    (cons
+     #'progn
+     (cl-mapcar
+      (lambda (arg index)
+        (let ((hash-table (car arg))
+              (alist (cadr arg)))
+          `(ert-deftest ,(intern (format "%s-%d" (symbol-name name) index)) ,arglist
+             ,docstring
+             (let ((,ht ,hash-table))
+               ,@(mapcar
+                  (lambda (cons)
+                    `(should (equal (gethash ',(car cons) ,ht) ',(cdr cons))))
+                  alist)
+               (should (= (hash-table-count ,ht) ,(length alist)))))))
+      body (number-sequence 0 (length body))))))
+
+(ert-deftest-validate-hash-table alg-prime-factorization ()
+  ((alg-prime-factorization 1)
+   ())
+  ((alg-prime-factorization 10)
+   ((2 . 1)
+    (5 . 1)))
+  ((alg-prime-factorization 35)
+   ((5 . 1)
+    (7 . 1)))
+  ((alg-prime-factorization 100)
+   ((2 . 2)
+    (5 . 2)))
+  ((alg-prime-factorization 15015)
+   ((3 . 1)
+    (5 . 1)
+    (7 . 1)
+    (11 . 1)
+    (13 . 1)))
+  ((alg-prime-factorization 1024)
+   ((2 . 10))))
 (provide 'alg-test)
 ;;; alg-test.el ends here
