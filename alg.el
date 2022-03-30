@@ -5,7 +5,7 @@
 ;; Author: ROCKTAKEY <rocktakey@gmail.com>
 ;; Keywords: tools
 
-;; Version: 0.2.0
+;; Version: 0.2.1
 ;; Package-Requires: ((emacs "24.1") (cl-lib "0.7"))
 ;; URL: https://github.com/ROCKTAKEY/alg
 
@@ -53,7 +53,7 @@
 (defun alg-eratosthenes-sieve (n)
   "Return vector of prime numbers less than or equal to N.
 
-(O(* n (log (log n))))"
+\(O (* n (log (log n))))"
   (let ((numbers (vconcat (number-sequence 0 n)))
         prime-numbers
         (i 0))
