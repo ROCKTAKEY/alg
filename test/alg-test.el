@@ -53,6 +53,16 @@
    (equal (alg-merge-sorted '(1 3 5 7) '(2 4 6 8))
           '(1 2 3 4 5 6 7 8))))
 
+(ert-deftest alg-eratosthenes-sieve ()
+  (should (equal (alg-eratosthenes-sieve 1) []))
+  (should (equal (alg-eratosthenes-sieve 2) [2]))
+  (should (equal (alg-eratosthenes-sieve 3) [2 3]))
+  (should (equal (alg-eratosthenes-sieve 4) [2 3]))
+  (should (equal (alg-eratosthenes-sieve 5) [2 3 5]))
+  (should (equal (alg-eratosthenes-sieve 6) [2 3 5]))
+  (should (equal (alg-eratosthenes-sieve 7) [2 3 5 7]))
+  (should (equal (alg-eratosthenes-sieve 1000) alg-test-prime-numbers-less-than-1000)))
+
 (ert-deftest alg-atkin-sieve ()
   (should (equal (alg-atkin-sieve 1) []))
   (should (equal (alg-atkin-sieve 2) [2]))
