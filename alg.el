@@ -146,5 +146,21 @@
          ((pred (<= 2)) '(2)))
        (nreverse res)))))
 
+(defun alg-prime-factorization (n)
+  "Return hash table which save prime factories of N.
+Each KEY is prime factory, and each VALUE is exponent of KEY.
+
+\(O (sqrt n))"
+  (let ((i 2)
+        (result (make-hash-table)))
+    (while (<= (* i i) n)
+      (while (= (mod n i) 0)
+        (setq n (/ n i))
+        (puthash i (1+ (or (gethash i result) 0)) result))
+      (cl-incf i))
+    (when (< 1 n)
+      (puthash n (1+ (or (gethash n result) 0)) result))
+    result))
+
 (provide 'alg)
 ;;; alg.el ends here
