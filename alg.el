@@ -5,7 +5,7 @@
 ;; Author: ROCKTAKEY <rocktakey@gmail.com>
 ;; Keywords: tools
 
-;; Version: 0.2.4
+;; Version: 0.3.0
 ;; Package-Requires: ((emacs "24.1") (cl-lib "0.7"))
 ;; URL: https://github.com/ROCKTAKEY/alg
 
@@ -145,6 +145,22 @@
          ((pred (<= 3)) '(2 3))
          ((pred (<= 2)) '(2)))
        (nreverse res)))))
+
+(defun alg-prime-factorization (n)
+  "Return hash table which save prime factories of N.
+Each KEY is prime factory, and each VALUE is exponent of KEY.
+
+\(O (sqrt n))"
+  (let ((i 2)
+        (result (make-hash-table)))
+    (while (<= (* i i) n)
+      (while (= (mod n i) 0)
+        (setq n (/ n i))
+        (puthash i (1+ (or (gethash i result) 0)) result))
+      (cl-incf i))
+    (when (< 1 n)
+      (puthash n (1+ (or (gethash n result) 0)) result))
+    result))
 
 (provide 'alg)
 ;;; alg.el ends here
