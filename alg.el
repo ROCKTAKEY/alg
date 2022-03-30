@@ -5,7 +5,7 @@
 ;; Author: ROCKTAKEY <rocktakey@gmail.com>
 ;; Keywords: tools
 
-;; Version: 0.2.3
+;; Version: 0.2.4
 ;; Package-Requires: ((emacs "24.1") (cl-lib "0.7"))
 ;; URL: https://github.com/ROCKTAKEY/alg
 
@@ -63,7 +63,7 @@
     (while (<= (* i i) n)
       (when (aref numbers i)
         (push i prime-numbers)
-        (let (j 0)
+        (let ((j 0))
           (while (<= j n)
             (aset numbers j nil)
             (cl-incf j i))))
