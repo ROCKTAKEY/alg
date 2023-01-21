@@ -1,7 +1,7 @@
 [[https://github.com/ROCKTAKEY/alg][https://img.shields.io/github/tag/ROCKTAKEY/alg.svg?style=flat-square]]
 [[file:LICENSE][https://img.shields.io/github/license/ROCKTAKEY/alg.svg?style=flat-square]]
 [[https://codecov.io/gh/ROCKTAKEY/alg?branch=master][https://img.shields.io/codecov/c/github/ROCKTAKEY/alg.svg?style=flat-square]]
-[[https://github.com/ROCKTAKEY/alg/actions][https://img.shields.io/github/workflow/status/ROCKTAKEY/alg/test/master.svg?style=flat-square]]
+[[https://github.com/ROCKTAKEY/alg/actions][https://img.shields.io/github/actions/workflow/status/ROCKTAKEY/alg/test.yml.svg?style=flat-square]]
 * alg: Algorithms and algebra features in Emacs
 
 * How to Use?
